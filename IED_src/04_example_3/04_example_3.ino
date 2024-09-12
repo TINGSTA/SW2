@@ -7,7 +7,7 @@ void setup(){
     while (!Serial) {
         ; //wait for serial port to connect.
       }
-     Serial.println("Hello Woreld!");
+     Serial.println("Hello World!");
      count = toggle = 0;
      digitalWrite(PIN_LED, toggle); //turn off LED.
 }
@@ -20,5 +20,5 @@ void loop() {
 }
 
 int toggle_state(int toggle) {
-  return toggle;
+  return !toggle;
 }
