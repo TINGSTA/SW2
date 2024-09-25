@@ -5,7 +5,7 @@
 
 // configurable parameters
 #define SND_VEL 346.0     // sound velocity at 24 celsius degree (unit: m/sec)
-#define INTERVAL 100      // sampling interval (unit: msec)
+#define INTERVAL 25     // sampling interval (unit: msec)
 #define PULSE_DURATION 10 // ultra-sound Pulse Duration (unit: usec)
 #define _DIST_MIN 100.0   // minimum distance to be measured (unit: mm)
 #define _DIST_MAX 300.0   // maximum distance to be measured (unit: mm)
@@ -39,12 +39,13 @@ void loop() {
 
   if ((distance == 0.0) || (distance > _DIST_MAX)) {
       distance = _DIST_MAX + 10.0;    // Set Higher Value
-      digitalWrite(PIN_LED, 1);       // LED OFF
+      analogWrite(PIN_LED, 255);       // LED OFF
   } else if (distance < _DIST_MIN) {
       distance = _DIST_MIN - 10.0;    // Set Lower Value
-      digitalWrite(PIN_LED, 1);       // LED OFF
+      analogWrite(PIN_LED, 255);       // LED OFF
   } else {    // In desired Range
-      digitalWrite(PIN_LED, 0);       // LED ON      
+      int duty = calculateDuty(distance);
+      analogWrite(PIN_LED, duty);       // LED ON      
   }
 
   // output the distance to the serial port
@@ -54,7 +55,7 @@ void loop() {
   Serial.println("");
   
   // Assume that it takes 50ms to do something.
-  delay(25);
+
   // update last sampling time
   last_sampling_time += INTERVAL;
 }
@@ -77,4 +78,16 @@ float USS_measure(int TRIG, int ECHO)
   //        = 100,000 micro*sec * 0.001 milli/micro * 0.5 * 346 meter/sec
   //        = 100,000 * 0.001 * 0.5 * 346
   //        = 17,300 mm  ==> 17.3m
+}
+
+int calculateDuty(float distance) {
+  if (distance <= 150.0) {
+    return map(distance, 100, 150, 255, 128);
+  } else if (distance <= 200.0) {
+    return map(distance, 150, 200, 128, 0);
+  } else if (distance <= 250.0) {
+    return map(distance, 200, 250, 0, 128);
+  } else {
+    return map(distance, 250, 300, 128, 255); 
+  }
 }
