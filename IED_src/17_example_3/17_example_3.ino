@@ -48,9 +48,9 @@ void loop()
   // Range filter: limit distance to _DIST_MIN ~ _DIST_MAX
   if (dist_raw >= _DIST_MIN && dist_raw <= _DIST_MAX) {
     dist_ema = dist_raw;     // EMA Filter code
-    digitalWrite(PIN_LED, HIGH); // Turn on LED if distance is in range
+    digitalWrite(PIN_LED, LOW); 
   } else {
-    digitalWrite(PIN_LED, LOW); // Turn off LED otherwise
+    digitalWrite(PIN_LED, HIGH); 
   }
 
   // EMA filter code
