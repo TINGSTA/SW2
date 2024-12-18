@@ -80,8 +80,7 @@ void loop() {
   } else if (dist_ema > _DIST_MAX) {
     myservo.writeMicroseconds(_DUTY_MAX);
   } else {
-    int duty = map(dist_ema, _DIST_MIN, _DIST_MAX, _DUTY_MIN, _DUTY_MAX);
-    myservo.writeMicroseconds(duty);
+    myservo.writeMicroseconds(_DUTY_NEU);
   }
 
   // output the distance to the serial port
