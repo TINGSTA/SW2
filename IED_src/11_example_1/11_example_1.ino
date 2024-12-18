@@ -26,9 +26,9 @@
 // duty duration for myservo.writeMicroseconds()
 // NEEDS TUNING (servo by servo)
  
-#define _DUTY_MIN 500 // servo full clockwise position (0 degree)
+#define _DUTY_MIN 1000 // servo full clockwise position (0 degree)
 #define _DUTY_NEU 1500 // servo neutral position (90 degree)
-#define _DUTY_MAX 2500 // servo full counterclockwise position (180 degree)
+#define _DUTY_MAX 2000 // servo full counterclockwise position (180 degree)
 
 // global variables
 float  dist_ema, dist_prev = _DIST_MAX; // unit: mm
@@ -75,20 +75,14 @@ void loop() {
 
   dist_ema = _EMA_ALPHA * dist_raw + (1 - _EMA_ALPHA) * dist_ema;
 
-  // Apply ema filter here  
-  dist_ema = dist_raw;
-
-  // adjust servo position according to the USS read value
-  // add your code here!
-  if (dist_ema < 180) {
-    myservo.write(0);
-  } else if (dist_ema > 360) {
-    myservo.write(180);
+  if (dist_ema < _DIST_MIN) {
+    myservo.writeMicroseconds(_DUTY_MIN);
+  } else if (dist_ema > _DIST_MAX) {
+    myservo.writeMicroseconds(_DUTY_MAX);
   } else {
-    int angle = map(dist_ema, 180, 360, 0, 180);
-    myservo.write(angle);
+    int duty = map(dist_ema, _DIST_MIN, _DIST_MAX, _DUTY_MIN, _DUTY_MAX);
+    myservo.writeMicroseconds(duty);
   }
-
 
   // output the distance to the serial port
   Serial.print("Min:");    Serial.print(_DIST_MIN);
@@ -97,6 +91,8 @@ void loop() {
   Serial.print(",Servo:"); Serial.print(myservo.read());  
   Serial.print(",High:");  Serial.print(_TARGET_HIGH);
   Serial.print(",Max:");   Serial.print(_DIST_MAX);
+  Serial.print("dist_ema:");  Serial.print(dist_ema);
+  Serial.print(", duty:");    Serial.println(duty);
   Serial.println("");
  
   // update last sampling time
