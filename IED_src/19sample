@@ -45,13 +45,13 @@ void loop() {
   dist_raw = USS_measure(PIN_TRIG,PIN_ECHO);
   
   if ((dist_raw == 0.0) || (dist_raw > _DIST_MAX)) {
-      dist_raw = _DIST_MAX + 10.0;    // Set Higher Value
-      digitalWrite(PIN_LED, 1);       // LED OFF
+      dist_raw = dist_prev;          // Out of range: use the previous value
+      digitalWrite(PIN_LED, 1);      // LED OFF
   } else if (dist_raw < _DIST_MIN) {
-      dist_raw = _DIST_MIN - 10.0;    // Set Lower Value
-      digitalWrite(PIN_LED, 1);       // LED OFF
-  } else {    // In desired Range
-      digitalWrite(PIN_LED, 0);       // LED ON      
+      dist_raw = dist_prev;          // Out of range: use the previous value
+      digitalWrite(PIN_LED, 1);      // LED OFF
+  } else {    
+      digitalWrite(PIN_LED, 0);      // LED ON
   }
 
   // Modify the below line to implement the EMA equation
