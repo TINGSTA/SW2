@@ -92,7 +92,6 @@ void loop() {
   Serial.print(",High:");  Serial.print(_TARGET_HIGH);
   Serial.print(",Max:");   Serial.print(_DIST_MAX);
   Serial.print("dist_ema:");  Serial.print(dist_ema);
-  Serial.print(", duty:");    Serial.println(duty);
   Serial.println("");
  
   // update last sampling time
