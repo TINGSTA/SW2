@@ -76,12 +76,12 @@ void loop() {
   dist_ema = _EMA_ALPHA * dist_raw + (1 - _EMA_ALPHA) * dist_ema;
 
   // Adjust servo position
-  if (dist_ema < _TARGET_LOW) {
-    myservo.writeMicroseconds(_DUTY_MIN); // 0 degrees
-  } else if (dist_ema > _TARGET_HIGH) {
-    myservo.writeMicroseconds(_DUTY_MAX); // 180 degrees
+  if (dist_ema < _TARGET_???) {
+    myservo.writeMicroseconds(_DUTY_???); 
+  } else if (dist_ema > _TARGET_???) {
+    myservo.writeMicroseconds(_DUTY_???);
   } else {
-    myservo.writeMicroseconds(_DUTY_NEU); // 90 degrees
+    myservo.writeMicroseconds(_DUTY_???);
   }
 
   // Output the distance and servo duty to the serial port
